@@ -195,7 +195,7 @@ class AudioPlayer {
 
         this.audio.src = track.url;
         this.trackTitle.textContent = track.name.replace(/\.[^/.]+$/, '');
-        this.trackArtist.textContent = 'Rock & Stone';
+        this.trackArtist.textContent = 'BEAS';
 
         this.renderPlaylist();
     }

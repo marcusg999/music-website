@@ -1,6 +1,6 @@
-# Rock & Stone - WebGL Music Website
+# BEAS - WebGL Music Website
 
-A fully functional, immersive music website featuring WebGL 3D graphics with a Rock/Mayan fusion aesthetic. Built entirely with client-side technologies (no backend required).
+A fully functional, immersive music website featuring WebGL 3D graphics with a modern aesthetic. Built entirely with client-side technologies (no backend required).
 
 ![Theme](https://img.shields.io/badge/Theme-Rock%2FMayan-8B4513)
 ![Tech](https://img.shields.io/badge/Tech-WebGL%20%7C%20Three.js-556B2F)
@@ -246,4 +246,4 @@ For questions or suggestions, use the contact form on the website or open an iss
 
 ---
 
-**Built with 🎵 and ◈ by the Rock & Stone team** 
+**Built with 🎵 and ◈ by the BEAS team** 

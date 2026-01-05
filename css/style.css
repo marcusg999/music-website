@@ -105,6 +105,21 @@ body {
     color: var(--color-secondary);
 }
 
+.logo-svg {
+    color: var(--color-secondary);
+    transition: all var(--transition-normal);
+}
+
+.nav-logo:hover .logo-svg {
+    transform: rotate(180deg);
+    color: var(--color-primary);
+}
+
+.logo-text {
+    letter-spacing: 0.15em;
+    font-weight: 900;
+}
+
 .nav-menu {
     display: flex;
     list-style: none;
