@@ -20,7 +20,7 @@ class WebGLScene {
     init() {
         // Create scene
         this.scene = new THREE.Scene();
-        this.scene.fog = new THREE.FogExp2(0x1A1A1A, 0.002);
+        this.scene.fog = new THREE.FogExp2(0x0F0F1E, 0.002);
 
         // Create camera
         this.camera = new THREE.PerspectiveCamera(
@@ -41,14 +41,14 @@ class WebGLScene {
         this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
         // Add lighting
-        const ambientLight = new THREE.AmbientLight(0xCD853F, 0.5);
+        const ambientLight = new THREE.AmbientLight(0x40E0D0, 0.5);
         this.scene.add(ambientLight);
 
-        const pointLight1 = new THREE.PointLight(0x8B4513, 1, 100);
+        const pointLight1 = new THREE.PointLight(0xFF6B9D, 1, 100);
         pointLight1.position.set(10, 10, 10);
         this.scene.add(pointLight1);
 
-        const pointLight2 = new THREE.PointLight(0x556B2F, 0.8, 100);
+        const pointLight2 = new THREE.PointLight(0x7FFFD4, 0.8, 100);
         pointLight2.position.set(-10, -10, -10);
         this.scene.add(pointLight2);
 
@@ -73,23 +73,23 @@ class WebGLScene {
             positions[i + 1] = (Math.random() - 0.5) * 100;
             positions[i + 2] = (Math.random() - 0.5) * 100;
 
-            // Earth-tone colors
+            // Neon pastel colors
             const colorChoice = Math.random();
             if (colorChoice < 0.33) {
-                // Brown tones
-                colors[i] = 0.545;
-                colors[i + 1] = 0.271;
-                colors[i + 2] = 0.075;
+                // Pastel neon pink/red
+                colors[i] = 1.0;      // R
+                colors[i + 1] = 0.42; // G
+                colors[i + 2] = 0.62; // B
             } else if (colorChoice < 0.66) {
-                // Terracotta
-                colors[i] = 0.804;
-                colors[i + 1] = 0.522;
-                colors[i + 2] = 0.247;
+                // Turquoise
+                colors[i] = 0.25;     // R
+                colors[i + 1] = 0.88; // G
+                colors[i + 2] = 0.82; // B
             } else {
-                // Jade green
-                colors[i] = 0.333;
-                colors[i + 1] = 0.420;
-                colors[i + 2] = 0.184;
+                // Aquamarine
+                colors[i] = 0.5;      // R
+                colors[i + 1] = 1.0;  // G
+                colors[i + 2] = 0.83; // B
             }
         }
 
@@ -120,24 +120,24 @@ class WebGLScene {
 
         const materials = [
             new THREE.MeshStandardMaterial({
-                color: 0x8B4513,
+                color: 0xFF6B9D,
                 metalness: 0.3,
                 roughness: 0.7,
-                emissive: 0x8B4513,
+                emissive: 0xFF6B9D,
                 emissiveIntensity: 0.2
             }),
             new THREE.MeshStandardMaterial({
-                color: 0xCD853F,
+                color: 0x40E0D0,
                 metalness: 0.3,
                 roughness: 0.7,
-                emissive: 0xCD853F,
+                emissive: 0x40E0D0,
                 emissiveIntensity: 0.2
             }),
             new THREE.MeshStandardMaterial({
-                color: 0x556B2F,
+                color: 0x7FFFD4,
                 metalness: 0.5,
                 roughness: 0.5,
-                emissive: 0x556B2F,
+                emissive: 0x7FFFD4,
                 emissiveIntensity: 0.3
             })
         ];
@@ -170,10 +170,10 @@ class WebGLScene {
     }
 
     createTexturedPlanes() {
-        // Create stone-textured planes in the background
+        // Create textured planes in the background
         const geometry = new THREE.PlaneGeometry(15, 15);
         const material = new THREE.MeshStandardMaterial({
-            color: 0x2F2F2F,
+            color: 0x1A1A2E,
             metalness: 0.1,
             roughness: 0.9,
             transparent: true,

@@ -296,11 +296,11 @@ class AudioPlayer {
             for (let i = 0; i < this.dataArray.length; i++) {
                 const barHeight = (this.dataArray[i] / 255) * this.visualizerCanvas.height;
 
-                // Create gradient for bars (earth tones)
+                // Create gradient for bars (neon pastel)
                 const gradient = this.canvasContext.createLinearGradient(0, this.visualizerCanvas.height - barHeight, 0, this.visualizerCanvas.height);
-                gradient.addColorStop(0, '#CD853F'); // Terracotta
-                gradient.addColorStop(0.5, '#8B4513'); // Brown
-                gradient.addColorStop(1, '#556B2F'); // Jade
+                gradient.addColorStop(0, '#FF6B9D'); // Pastel Neon Pink
+                gradient.addColorStop(0.5, '#40E0D0'); // Turquoise
+                gradient.addColorStop(1, '#7FFFD4'); // Aquamarine
 
                 this.canvasContext.fillStyle = gradient;
                 this.canvasContext.fillRect(x, this.visualizerCanvas.height - barHeight, barWidth, barHeight);
