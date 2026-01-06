@@ -83,22 +83,18 @@ class GalleryManager {
         statusDiv.className = 'upload-status';
         
         let uploadedCount = 0;
-        let errorCount = 0;
+        let errorMessages = [];
 
         for (let file of files) {
             // Validate file type
             if (!file.type.startsWith('image/')) {
-                statusDiv.textContent = `${file.name} is not an image`;
-                statusDiv.className = 'upload-status error';
-                errorCount++;
+                errorMessages.push(`${file.name} is not an image`);
                 continue;
             }
             
             // Validate file size (10MB max)
             if (file.size > 10 * 1024 * 1024) {
-                statusDiv.textContent = `${file.name} is too large (max 10MB)`;
-                statusDiv.className = 'upload-status error';
-                errorCount++;
+                errorMessages.push(`${file.name} is too large (max 10MB)`);
                 continue;
             }
             
@@ -107,15 +103,19 @@ class GalleryManager {
                 uploadedCount++;
             } catch (error) {
                 console.error('Failed to save image:', error);
-                errorCount++;
+                errorMessages.push(`Failed to upload ${file.name}`);
             }
         }
         
-        if (uploadedCount > 0) {
+        // Display result message
+        if (uploadedCount > 0 && errorMessages.length === 0) {
             statusDiv.textContent = `Upload complete! ${uploadedCount} image(s) uploaded.`;
             statusDiv.className = 'upload-status success';
-        } else if (errorCount > 0) {
-            statusDiv.textContent = 'Upload failed. Please try again.';
+        } else if (uploadedCount > 0 && errorMessages.length > 0) {
+            statusDiv.textContent = `${uploadedCount} image(s) uploaded. ${errorMessages.length} failed.`;
+            statusDiv.className = 'upload-status success';
+        } else {
+            statusDiv.textContent = errorMessages.join('. ');
             statusDiv.className = 'upload-status error';
         }
         
@@ -131,7 +131,7 @@ class GalleryManager {
     
     async saveImage(file) {
         const imageData = {
-            id: Date.now() + '-' + Math.random().toString(36).substr(2, 9),
+            id: Date.now() + '-' + Math.random().toString(36).substring(2, 11),
             filename: file.name,
             blob: file,
             uploadDate: new Date().toISOString(),
@@ -157,6 +157,14 @@ class GalleryManager {
         const isAdmin = authManager && authManager.isAdmin();
         
         if (!grid) return;
+
+        // Revoke old object URLs to prevent memory leaks
+        const oldImages = grid.querySelectorAll('img');
+        oldImages.forEach(img => {
+            if (img.src.startsWith('blob:')) {
+                URL.revokeObjectURL(img.src);
+            }
+        });
 
         if (!this.images.length) {
             grid.innerHTML = '';
@@ -188,6 +196,11 @@ class GalleryManager {
         
         if (!lightbox || !lightboxImg) return;
 
+        // Revoke previous object URL to prevent memory leak
+        if (lightboxImg.src && lightboxImg.src.startsWith('blob:')) {
+            URL.revokeObjectURL(lightboxImg.src);
+        }
+
         lightboxImg.src = URL.createObjectURL(img.blob);
         if (filename) filename.textContent = img.filename;
         if (date) date.textContent = new Date(img.uploadDate).toLocaleDateString();
@@ -199,6 +212,14 @@ class GalleryManager {
     
     closeLightbox() {
         const lightbox = document.getElementById('imageLightbox');
+        const lightboxImg = document.getElementById('lightboxImage');
+        
+        // Revoke object URL when closing
+        if (lightboxImg && lightboxImg.src && lightboxImg.src.startsWith('blob:')) {
+            URL.revokeObjectURL(lightboxImg.src);
+            lightboxImg.src = '';
+        }
+        
         if (lightbox) {
             lightbox.style.display = 'none';
         }
