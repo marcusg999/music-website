@@ -49,7 +49,7 @@ class InstagramFeedManager {
         const username = window.instagramConfig.username;
         const instagramUrl = `https://instagram.com/${username}`;
         
-        document.querySelectorAll('a[href*="instagram.com/beas"]').forEach(link => {
+        document.querySelectorAll(`a[href*="instagram.com/${username}"]`).forEach(link => {
             link.href = instagramUrl;
         });
         
@@ -111,6 +111,11 @@ class InstagramFeedManager {
 
         const data = await response.json();
         
+        // Validate response structure
+        if (!data || !data.posts || !data.posts.items) {
+            throw new Error('Invalid response from Juicer API');
+        }
+        
         // Filter for Instagram posts only
         this.posts = data.posts.items
             .filter(post => post.source.source === 'Instagram')
@@ -154,11 +159,16 @@ class InstagramFeedManager {
 
     async loadManualPosts() {
         // Load manually uploaded posts from localStorage
-        const manualPosts = JSON.parse(localStorage.getItem('instagramManualPosts') || '[]');
-        
-        this.posts = manualPosts
-            .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .slice(0, window.instagramConfig.postsToShow);
+        try {
+            const manualPosts = JSON.parse(localStorage.getItem('instagramManualPosts') || '[]');
+            
+            this.posts = manualPosts
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, window.instagramConfig.postsToShow);
+        } catch (error) {
+            console.error('Failed to parse manual posts:', error);
+            this.posts = [];
+        }
     }
 
     renderFeed() {
@@ -168,13 +178,16 @@ class InstagramFeedManager {
         }
 
         this.hideLoading();
-
-        const username = window.instagramConfig.username;
         
-        this.container.innerHTML = this.posts.map(post => `
-            <a href="${post.link}" target="_blank" rel="noopener" class="instagram-post">
+        this.container.innerHTML = this.posts.map(post => {
+            // Validate URLs to prevent XSS
+            const safeLink = this.sanitizeUrl(post.link);
+            const safeImage = this.sanitizeUrl(post.image);
+            
+            return `
+            <a href="${safeLink}" target="_blank" rel="noopener" class="instagram-post">
                 <div class="instagram-post-image">
-                    <img src="${post.image}" alt="${this.escapeHtml(post.caption.substring(0, 50))}" loading="lazy">
+                    <img src="${safeImage}" alt="${this.escapeHtml(post.caption.substring(0, 50))}" loading="lazy">
                 </div>
                 <div class="instagram-post-overlay">
                     <div class="instagram-post-stats">
@@ -196,7 +209,8 @@ class InstagramFeedManager {
                     </p>
                 </div>
             </a>
-        `).join('');
+        `;
+        }).join('');
     }
 
     showLoading() {
@@ -215,7 +229,10 @@ class InstagramFeedManager {
         if (this.container) this.container.style.display = 'none';
         if (this.error) {
             this.error.style.display = 'block';
-            this.error.querySelector('p').textContent = message;
+            const errorText = this.error.querySelector('p');
+            if (errorText) {
+                errorText.textContent = message;
+            }
         }
     }
 
@@ -226,8 +243,14 @@ class InstagramFeedManager {
     }
 
     formatNumber(num) {
-        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-        if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+        if (num >= 1000000) {
+            const millions = num / 1000000;
+            return Number.isInteger(millions) ? millions + 'M' : millions.toFixed(1) + 'M';
+        }
+        if (num >= 1000) {
+            const thousands = num / 1000;
+            return Number.isInteger(thousands) ? thousands + 'K' : thousands.toFixed(1) + 'K';
+        }
         return num.toString();
     }
 
@@ -235,6 +258,29 @@ class InstagramFeedManager {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    sanitizeUrl(url) {
+        // Basic URL validation to prevent XSS
+        if (!url || typeof url !== 'string' || !url.trim()) return '#';
+        
+        // Only allow http, https, and safe data URLs (images only)
+        const urlLower = url.toLowerCase().trim();
+        if (urlLower.startsWith('http://') || urlLower.startsWith('https://')) {
+            // Escape any HTML-encoded characters
+            const div = document.createElement('div');
+            div.textContent = url;
+            return div.innerHTML;
+        }
+        
+        // Allow only image data URIs for image sources
+        if (urlLower.startsWith('data:image/')) {
+            const div = document.createElement('div');
+            div.textContent = url;
+            return div.innerHTML;
+        }
+        
+        return '#';
     }
 
     getCachedData() {
@@ -245,8 +291,16 @@ class InstagramFeedManager {
             return null;
         }
 
-        const cached = localStorage.getItem(this.cacheKey);
-        return cached ? JSON.parse(cached) : null;
+        try {
+            const cached = localStorage.getItem(this.cacheKey);
+            return cached ? JSON.parse(cached) : null;
+        } catch (error) {
+            console.error('Failed to parse cached Instagram data:', error);
+            // Clear corrupted cache
+            localStorage.removeItem(this.cacheKey);
+            localStorage.removeItem(this.cacheTimeKey);
+            return null;
+        }
     }
 
     cacheData() {

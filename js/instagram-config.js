@@ -32,11 +32,12 @@ window.instagramConfig = {
     
     // Juicer.io settings (if method = 'juicer')
     juicer: {
-        feedId: 'YOUR_JUICER_FEED_ID', // Get from juicer.io dashboard
-        feedName: 'beas' // Your feed name
+        feedName: 'beas' // Your feed name from Juicer.io
     },
     
     // Official API settings (if method = 'official')
+    // WARNING: Never commit real access tokens to version control!
+    // Use environment variables or secure credential storage in production.
     official: {
         accessToken: 'YOUR_INSTAGRAM_ACCESS_TOKEN',
         userId: 'YOUR_INSTAGRAM_USER_ID'
