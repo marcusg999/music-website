@@ -329,6 +329,19 @@ body {
     color: var(--color-background);
 }
 
+.btn-manage {
+    background: transparent;
+    color: var(--color-secondary);
+    border: 2px solid var(--color-secondary);
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.btn-manage:hover {
+    background: var(--color-secondary);
+    color: var(--color-background);
+}
+
 /* ==========================================================================
    Featured Media Section
    ========================================================================== */
@@ -1048,6 +1061,98 @@ input[type="range"]::-moz-range-thumb {
     0%, 100% { transform: translateX(0); }
     10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
     20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+/* User Management Modal Styles */
+.user-management-modal {
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.user-management-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.section-subtitle {
+    color: var(--color-accent);
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--color-accent);
+    padding-bottom: 0.5rem;
+}
+
+.user-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.user-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    background: rgba(64, 224, 208, 0.1);
+    border: 1px solid var(--color-secondary);
+    border-radius: 8px;
+    transition: all var(--transition-fast);
+}
+
+.user-item:hover {
+    background: rgba(64, 224, 208, 0.2);
+    transform: translateX(4px);
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.user-username {
+    color: var(--color-light);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.user-date {
+    color: var(--color-light);
+    opacity: 0.7;
+    font-size: 0.85rem;
+}
+
+.btn-delete-user {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all var(--transition-fast);
+}
+
+.btn-delete-user:hover:not(:disabled) {
+    background: var(--color-primary);
+    color: white;
+}
+
+.btn-delete-user:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    border-color: var(--color-dark);
+    color: var(--color-dark);
+}
+
+.form-message.success {
+    display: block;
+    background: rgba(127, 255, 212, 0.3);
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    padding: var(--spacing-sm);
+    border-radius: 4px;
+    margin-top: var(--spacing-sm);
 }
 
 /* ==========================================================================
