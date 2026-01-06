@@ -5,7 +5,7 @@
 class StorageManager {
     constructor() {
         this.dbName = 'MusicWebsiteDB';
-        this.dbVersion = 1;
+        this.dbVersion = 2;
         this.db = null;
         this.initDB();
     }
@@ -40,6 +40,12 @@ class StorageManager {
                 if (!db.objectStoreNames.contains('videoFiles')) {
                     const videoStore = db.createObjectStore('videoFiles', { keyPath: 'id', autoIncrement: true });
                     videoStore.createIndex('name', 'name', { unique: false });
+                }
+
+                if (!db.objectStoreNames.contains('images')) {
+                    const imageStore = db.createObjectStore('images', { keyPath: 'id' });
+                    imageStore.createIndex('filename', 'filename', { unique: false });
+                    imageStore.createIndex('uploadDate', 'uploadDate', { unique: false });
                 }
 
                 console.log('Database setup complete');
@@ -278,6 +284,70 @@ class StorageManager {
     getContactMessages() {
         const messages = localStorage.getItem('contacts');
         return messages ? JSON.parse(messages) : [];
+    }
+
+    /**
+     * Image storage methods
+     */
+
+    /**
+     * Save image to IndexedDB
+     */
+    async saveImage(imageData) {
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction(['images'], 'readwrite');
+            const store = transaction.objectStore('images');
+            const request = store.add(imageData);
+            
+            request.onsuccess = () => {
+                console.log('Image saved:', imageData.filename);
+                resolve(request.result);
+            };
+            
+            request.onerror = () => {
+                console.error('Failed to save image');
+                reject(request.error);
+            };
+        });
+    }
+
+    /**
+     * Get all images
+     */
+    async getAllImages() {
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction(['images'], 'readonly');
+            const store = transaction.objectStore('images');
+            const request = store.getAll();
+            
+            request.onsuccess = () => {
+                resolve(request.result);
+            };
+            
+            request.onerror = () => {
+                reject(request.error);
+            };
+        });
+    }
+
+    /**
+     * Delete image
+     */
+    async deleteImage(id) {
+        return new Promise((resolve, reject) => {
+            const transaction = this.db.transaction(['images'], 'readwrite');
+            const store = transaction.objectStore('images');
+            const request = store.delete(id);
+            
+            request.onsuccess = () => {
+                console.log('Image deleted');
+                resolve();
+            };
+            
+            request.onerror = () => {
+                reject(request.error);
+            };
+        });
     }
 }
 

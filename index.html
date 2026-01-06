@@ -159,7 +159,7 @@
                         <span class="glyph-icon large-glyph">◈</span>
                     </div>
                 </div>
-                <div class="bio-text" id="bio-text" contenteditable="true">
+                <div class="bio-text" id="bio-text">
                     <h3>The Legend of BEAS</h3>
                     <p>Born from the ancient echoes of earth and fire, BEAS merges the primal rhythms of rock with the mystical essence of Mayan heritage. Our sound is carved from stone and forged in flame, creating an immersive sonic experience that transcends time.</p>
                     <p>Drawing inspiration from ancient glyphs and modern intensity, we craft music that resonates with the soul of the earth. Each performance is a ritual, each song a journey through forgotten temples and modern soundscapes.</p>
@@ -198,23 +198,28 @@
                 <span class="glyph-icon">⬚</span>
                 Gallery
             </h2>
-            <div class="gallery-grid" id="gallery-grid">
-                <!-- Gallery items will be added here -->
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="glyph-icon">◈</span>
-                    </div>
+            
+            <!-- Admin Upload Controls (hidden by default) -->
+            <div id="galleryUploadControls" class="gallery-upload-section" style="display: none;">
+                <h3 class="upload-section-title">Upload Images</h3>
+                <div class="upload-group">
+                    <input type="file" id="imageUpload" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" multiple hidden>
+                    <label for="imageUpload" class="btn btn-upload">
+                        <span class="glyph-icon">↑</span> Choose Images
+                    </label>
+                    <button id="uploadImageBtn" class="btn btn-primary">Upload Images</button>
                 </div>
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="glyph-icon">☉</span>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="glyph-icon">◐</span>
-                    </div>
-                </div>
+                <div id="imageUploadStatus" class="upload-status"></div>
+            </div>
+            
+            <!-- Gallery Grid -->
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Images will be dynamically inserted here -->
+            </div>
+            
+            <!-- Empty State -->
+            <div id="galleryEmpty" class="gallery-empty" style="display: none;">
+                <p>No images in gallery yet.</p>
             </div>
         </div>
     </section>
@@ -429,6 +434,18 @@
         </div>
     </div>
 
+    <!-- Image Lightbox Modal -->
+    <div id="imageLightbox" class="lightbox-modal" style="display: none;">
+        <span class="lightbox-close-gallery">&times;</span>
+        <button class="lightbox-prev">&#10094;</button>
+        <button class="lightbox-next">&#10095;</button>
+        <img id="lightboxImage" class="lightbox-image" src="" alt="">
+        <div class="lightbox-info">
+            <p id="lightboxFilename"></p>
+            <p id="lightboxDate"></p>
+        </div>
+    </div>
+
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close">&times;</span>
@@ -437,6 +454,10 @@
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
     <script src="js/storage.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/webgl-scene.js"></script>
@@ -445,6 +466,12 @@
     <script src="js/events.js"></script>
     <script src="js/instagram-config.js"></script>
     <script src="js/instagram-feed.js"></script>
+    <script src="js/gallery.js"></script>
+    
+    <!-- Email Configuration and Contact Form Handler -->
+    <script src="js/email-config.js"></script>
+    <script src="js/contact-form.js"></script>
+    
     <script src="js/main.js"></script>
 </body>
 </html>

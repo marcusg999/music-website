@@ -166,12 +166,83 @@ Background: #1A1A1A  /* Very Dark Brown */
 3. Click "Save Bio" to persist changes
 
 ### Forms
-- Newsletter and contact forms store data in localStorage
+- Newsletter forms store data in localStorage
+- Contact form sends emails via EmailJS (requires configuration)
 - Check browser console or localStorage to see submitted data
+
+## 📧 Email Configuration Setup
+
+This website uses EmailJS to send contact form submissions via email.
+
+### Steps to Configure EmailJS:
+
+1. **Create EmailJS Account**
+   - Go to https://www.emailjs.com/
+   - Sign up for a free account (allows 200 emails/month)
+
+2. **Add Email Service**
+   - In EmailJS dashboard, go to "Email Services"
+   - Click "Add New Service"
+   - Choose your email provider (Gmail, Outlook, etc.)
+   - Connect your email account
+
+3. **Create Email Template**
+   - Go to "Email Templates"
+   - Click "Create New Template"
+   - Use this template structure:
+
+   **Subject:** New Contact Form Submission from {{from_name}}
+   
+   **Body:**
+   ```
+   You have received a new message from your website contact form.
+
+   Name: {{from_name}}
+   Email: {{from_email}}
+   
+   Message:
+   {{message}}
+   
+   ---
+   Sent from BEAS Music Website
+   Timestamp: {{timestamp}}
+   ```
+
+4. **Get Your Credentials**
+   - Service ID: Found in "Email Services" section
+   - Template ID: Found in "Email Templates" section
+   - Public Key: Found in "Account" > "General" section
+
+5. **Update Configuration File**
+   - Open `js/email-config.js`
+   - Replace placeholder values with your credentials:
+   ```javascript
+   window.emailConfig = {
+       serviceId: 'YOUR_SERVICE_ID',
+       templateId: 'YOUR_TEMPLATE_ID',
+       publicKey: 'YOUR_PUBLIC_KEY',
+       recipientEmail: 'your-email@example.com'
+   };
+   ```
+
+6. **Test the Form**
+   - Submit a test message through your contact form
+   - Check your email for the message
+   - Messages are also saved to localStorage as backup
+
+### How Contact Form Works
+
+- **With EmailJS configured**: Submissions are sent via email AND saved to localStorage
+- **Without EmailJS**: Submissions are only saved to localStorage with a warning message
+- **On email failure**: Form keeps the data so users don't lose their message
+- **Email validation**: Checks for valid email format and required fields (minimum 10 characters for message)
+- **Loading states**: Shows "Sending..." during submission
+- **Success/Error notifications**: Visual feedback after submission
 
 ## 🛠️ Technologies Used
 
 - **Three.js** (r128): WebGL 3D graphics library
+- **EmailJS**: Client-side email sending service
 - **Web Audio API**: Real-time audio analysis and visualization
 - **IndexedDB API**: Client-side storage for media files
 - **localStorage**: Persistent storage for text content
