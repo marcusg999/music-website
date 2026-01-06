@@ -54,7 +54,9 @@ class EventsManager {
     openModal() {
         // Check if user is logged in
         if (!authManager || !authManager.isAdmin()) {
-            alert('You must be logged in to add events.');
+            if (typeof window.musicWebsite !== 'undefined') {
+                window.musicWebsite.showNotification('You must be logged in to add events.', 'error');
+            }
             return;
         }
         
@@ -71,7 +73,9 @@ class EventsManager {
 
         // Check if user is logged in
         if (!authManager || !authManager.isAdmin()) {
-            alert('You must be logged in to add events.');
+            if (typeof window.musicWebsite !== 'undefined') {
+                window.musicWebsite.showNotification('You must be logged in to add events.', 'error');
+            }
             this.closeModal();
             return;
         }
@@ -93,7 +97,9 @@ class EventsManager {
     deleteEvent(id) {
         // Check if user is logged in
         if (!authManager || !authManager.isAdmin()) {
-            alert('You must be logged in to delete events.');
+            if (typeof window.musicWebsite !== 'undefined') {
+                window.musicWebsite.showNotification('You must be logged in to delete events.', 'error');
+            }
             return;
         }
         
