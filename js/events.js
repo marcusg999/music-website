@@ -52,9 +52,9 @@ class EventsManager {
     }
 
     openModal() {
-        // Check if admin is logged in
+        // Check if user is logged in
         if (!authManager || !authManager.isAdmin()) {
-            alert('You must be logged in as admin to add events.');
+            alert('You must be logged in to add events.');
             return;
         }
         
@@ -69,9 +69,9 @@ class EventsManager {
     handleSubmit(e) {
         e.preventDefault();
 
-        // Check if admin is logged in
+        // Check if user is logged in
         if (!authManager || !authManager.isAdmin()) {
-            alert('You must be logged in as admin to add events.');
+            alert('You must be logged in to add events.');
             this.closeModal();
             return;
         }
@@ -91,9 +91,9 @@ class EventsManager {
     }
 
     deleteEvent(id) {
-        // Check if admin is logged in
+        // Check if user is logged in
         if (!authManager || !authManager.isAdmin()) {
-            alert('You must be logged in as admin to delete events.');
+            alert('You must be logged in to delete events.');
             return;
         }
         

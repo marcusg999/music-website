@@ -81,9 +81,9 @@ class MusicWebsite {
 
         // Save bio
         saveBioBtn.addEventListener('click', () => {
-            // Check if admin is logged in
+            // Check if user is logged in
             if (!authManager || !authManager.isAdmin()) {
-                this.showNotification('You must be logged in as admin to save bio.', 'error');
+                this.showNotification('You must be logged in to save bio.', 'error');
                 return;
             }
             
