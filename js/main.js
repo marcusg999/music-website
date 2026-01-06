@@ -76,12 +76,41 @@ class MusicWebsite {
             bioText.innerHTML = savedBio;
         }
 
+        // Set initial state based on auth status
+        this.updateBioEditableState();
+
         // Save bio
         saveBioBtn.addEventListener('click', () => {
+            // Check if user is logged in
+            if (!authManager || !authManager.isAdmin()) {
+                this.showNotification('You must be logged in to save bio.', 'error');
+                return;
+            }
+            
             const content = bioText.innerHTML;
             storage.saveBio(content);
             this.showNotification('Bio saved successfully!', 'success');
         });
+    }
+
+    updateBioEditableState() {
+        const bioText = document.getElementById('bio-text');
+        const saveBioBtn = document.getElementById('save-bio-btn');
+        const isAdmin = authManager && authManager.isAdmin();
+
+        if (bioText) {
+            if (isAdmin) {
+                bioText.setAttribute('contenteditable', 'true');
+                bioText.classList.add('editable');
+            } else {
+                bioText.removeAttribute('contenteditable');
+                bioText.classList.remove('editable');
+            }
+        }
+
+        if (saveBioBtn) {
+            saveBioBtn.style.display = isAdmin ? 'inline-block' : 'none';
+        }
     }
 
     // Forms

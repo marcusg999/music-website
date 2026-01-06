@@ -52,6 +52,14 @@ class EventsManager {
     }
 
     openModal() {
+        // Check if user is logged in
+        if (!authManager || !authManager.isAdmin()) {
+            if (typeof window.musicWebsite !== 'undefined') {
+                window.musicWebsite.showNotification('You must be logged in to add events.', 'error');
+            }
+            return;
+        }
+        
         this.eventForm.reset();
         this.eventModal.classList.add('active');
     }
@@ -62,6 +70,15 @@ class EventsManager {
 
     handleSubmit(e) {
         e.preventDefault();
+
+        // Check if user is logged in
+        if (!authManager || !authManager.isAdmin()) {
+            if (typeof window.musicWebsite !== 'undefined') {
+                window.musicWebsite.showNotification('You must be logged in to add events.', 'error');
+            }
+            this.closeModal();
+            return;
+        }
 
         const eventData = {
             id: Date.now(),
@@ -78,6 +95,14 @@ class EventsManager {
     }
 
     deleteEvent(id) {
+        // Check if user is logged in
+        if (!authManager || !authManager.isAdmin()) {
+            if (typeof window.musicWebsite !== 'undefined') {
+                window.musicWebsite.showNotification('You must be logged in to delete events.', 'error');
+            }
+            return;
+        }
+        
         if (confirm('Are you sure you want to delete this event?')) {
             this.events = this.events.filter(event => event.id !== id);
             this.saveEvents();
@@ -128,6 +153,9 @@ class EventsManager {
         // Format date
         const dateStr = this.formatEventDate(eventDate);
 
+        // Check if admin is logged in
+        const isAdmin = authManager && authManager.isAdmin();
+
         card.innerHTML = `
             <div class="event-date">
                 <span class="glyph-icon">◐</span> ${dateStr}
@@ -138,7 +166,7 @@ class EventsManager {
             </div>
             <div class="event-actions">
                 ${event.ticketLink ? `<a href="${event.ticketLink}" target="_blank" class="event-ticket-link">Get Tickets</a>` : ''}
-                <button class="event-delete-btn">Delete</button>
+                <button class="event-delete-btn" style="display: ${isAdmin ? 'inline-block' : 'none'};">Delete</button>
             </div>
         `;
 
