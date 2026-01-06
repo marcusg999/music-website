@@ -1215,3 +1215,48 @@ input[type="range"]::-moz-range-thumb {
 .mb-1 { margin-bottom: var(--spacing-sm); }
 .mb-2 { margin-bottom: var(--spacing-md); }
 .mb-3 { margin-bottom: var(--spacing-lg); }
+
+/* ==========================================================================
+   Contact Form Status Messages
+   ========================================================================== */
+.form-status {
+    margin-top: 15px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    display: none;
+    animation: slideIn 0.3s ease;
+}
+
+.form-status-success {
+    background: rgba(127, 255, 212, 0.2);
+    border: 1px solid var(--color-accent, #7FFFD4);
+    color: var(--color-accent, #7FFFD4);
+}
+
+.form-status-error {
+    background: rgba(255, 107, 157, 0.2);
+    border: 1px solid var(--color-primary, #FF6B9D);
+    color: var(--color-primary, #FF6B9D);
+}
+
+.form-status-warning {
+    background: rgba(255, 200, 87, 0.2);
+    border: 1px solid #FFC857;
+    color: #FFC857;
+}
+
+.form-loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.form-loading button {
+    cursor: wait;
+}
+
+/* Submit button loading state */
+button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
