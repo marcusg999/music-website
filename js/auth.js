@@ -163,6 +163,10 @@ class AuthManager {
         return this.isAuthenticated;
     }
 
+    isAdmin() {
+        return this.isAuthenticated;
+    }
+
     updateUI() {
         this.updateUIBasedOnAuth();
     }
@@ -221,15 +225,17 @@ class AuthManager {
                 bioText.classList.remove('editable');
             }
         }
-        if (saveBioBtn) {
-            saveBioBtn.style.display = loggedIn ? 'inline-block' : 'none';
+
+        // Gallery upload controls
+        const galleryUploadControls = document.getElementById('galleryUploadControls');
+        if (galleryUploadControls) {
+            galleryUploadControls.style.display = this.isAuthenticated ? 'block' : 'none';
         }
         
-        // Gallery upload controls (already handled by uploadControls)
-        // Gallery delete buttons would be added here if they exist
-        document.querySelectorAll('.delete-gallery-item-btn').forEach(btn => {
-            btn.style.display = loggedIn ? 'inline-block' : 'none';
-        });
+        // Refresh gallery to show/hide delete buttons
+        if (window.galleryManager) {
+            galleryManager.renderGallery();
+        }
     }
 
     showLoginModal() {

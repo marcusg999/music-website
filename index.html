@@ -197,23 +197,28 @@
                 <span class="glyph-icon">⬚</span>
                 Gallery
             </h2>
-            <div class="gallery-grid" id="gallery-grid">
-                <!-- Gallery items will be added here -->
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="glyph-icon">◈</span>
-                    </div>
+            
+            <!-- Admin Upload Controls (hidden by default) -->
+            <div id="galleryUploadControls" class="gallery-upload-section" style="display: none;">
+                <h3 class="upload-section-title">Upload Images</h3>
+                <div class="upload-group">
+                    <input type="file" id="imageUpload" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp" multiple hidden>
+                    <label for="imageUpload" class="btn btn-upload">
+                        <span class="glyph-icon">↑</span> Choose Images
+                    </label>
+                    <button id="uploadImageBtn" class="btn btn-primary">Upload Images</button>
                 </div>
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="glyph-icon">☉</span>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="glyph-icon">◐</span>
-                    </div>
-                </div>
+                <div id="imageUploadStatus" class="upload-status"></div>
+            </div>
+            
+            <!-- Gallery Grid -->
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Images will be dynamically inserted here -->
+            </div>
+            
+            <!-- Empty State -->
+            <div id="galleryEmpty" class="gallery-empty" style="display: none;">
+                <p>No images in gallery yet.</p>
             </div>
         </div>
     </section>
@@ -387,6 +392,18 @@
         </div>
     </div>
 
+    <!-- Image Lightbox Modal -->
+    <div id="imageLightbox" class="lightbox-modal" style="display: none;">
+        <span class="lightbox-close-gallery">&times;</span>
+        <button class="lightbox-prev">&#10094;</button>
+        <button class="lightbox-next">&#10095;</button>
+        <img id="lightboxImage" class="lightbox-image" src="" alt="">
+        <div class="lightbox-info">
+            <p id="lightboxFilename"></p>
+            <p id="lightboxDate"></p>
+        </div>
+    </div>
+
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close">&times;</span>
@@ -405,6 +422,7 @@
     <script src="js/audio-player.js"></script>
     <script src="js/media-upload.js"></script>
     <script src="js/events.js"></script>
+    <script src="js/gallery.js"></script>
     
     <!-- Email Configuration and Contact Form Handler -->
     <script src="js/email-config.js"></script>
