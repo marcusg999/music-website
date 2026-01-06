@@ -69,7 +69,9 @@ class ContactFormManager {
         }
 
         if (typeof emailjs === 'undefined') {
-            this.showStatus('Email service not loaded. Please check your connection.', 'error');
+            this.showStatus('Email service not loaded. Message saved locally.', 'warning');
+            this.saveToLocalStorage(data);
+            this.form.reset();
             return;
         }
 
