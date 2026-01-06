@@ -224,7 +224,7 @@ function scrollToSection(sectionId) {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new MusicWebsite();
+    window.musicWebsite = new MusicWebsite();
 
     // Add animations to CSS dynamically
     const style = document.createElement('style');

@@ -34,6 +34,8 @@
                 <li><a href="#events" class="nav-link">Events</a></li>
                 <li><a href="#gallery" class="nav-link">Gallery</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><button id="admin-btn" class="btn btn-admin" onclick="authManager.showLoginModal()">Admin</button></li>
+                <li><button id="logout-btn" class="btn btn-logout" onclick="authManager.logout()" style="display: none;">Logout</button></li>
             </ul>
         </div>
     </nav>
@@ -313,6 +315,35 @@
         </div>
     </div>
 
+    <!-- Admin Login Modal -->
+    <div id="admin-login-modal" class="modal">
+        <div class="modal-content admin-modal">
+            <span class="modal-close" onclick="authManager.hideLoginModal()">&times;</span>
+            <h3 class="modal-title">
+                <span class="glyph-icon">◈</span>
+                Admin Login
+            </h3>
+            <p class="admin-subtitle">Enter your credentials to access admin features</p>
+            <form id="admin-login-form" class="form" onsubmit="authManager.handleLoginSubmit(event)">
+                <div class="form-group">
+                    <label for="admin-username">Username</label>
+                    <input type="text" id="admin-username" class="form-input" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Password</label>
+                    <input type="password" id="admin-password" class="form-input" required autocomplete="current-password">
+                </div>
+                <div id="login-error" class="form-message error" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+            <div class="admin-info">
+                <p class="info-text"><strong>Demo Credentials:</strong></p>
+                <p class="info-text">Username: <code>admin</code></p>
+                <p class="info-text">Password: <code>beas2026</code></p>
+            </div>
+        </div>
+    </div>
+
     <!-- Lightbox -->
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close">&times;</span>
@@ -322,6 +353,7 @@
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
     <script src="js/webgl-scene.js"></script>
     <script src="js/audio-player.js"></script>
     <script src="js/media-upload.js"></script>

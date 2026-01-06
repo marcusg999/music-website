@@ -25,6 +25,14 @@ class MediaUploadManager {
     }
 
     async handleAudioUpload(event) {
+        // Check authentication
+        if (!authManager.isLoggedIn()) {
+            alert('Please log in as admin to upload media');
+            event.target.value = '';
+            authManager.showLoginModal();
+            return;
+        }
+        
         const files = Array.from(event.target.files);
         
         for (const file of files) {
@@ -55,6 +63,14 @@ class MediaUploadManager {
     }
 
     async handleVideoUpload(event) {
+        // Check authentication
+        if (!authManager.isLoggedIn()) {
+            alert('Please log in as admin to upload media');
+            event.target.value = '';
+            authManager.showLoginModal();
+            return;
+        }
+        
         const files = Array.from(event.target.files);
         
         for (const file of files) {
