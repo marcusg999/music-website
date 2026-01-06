@@ -63,7 +63,7 @@ class GalleryManager {
     
     async handleImageUpload() {
         // Check authentication
-        if (!authManager.isLoggedIn()) {
+        if (!authManager.isAdmin()) {
             alert('Please log in as admin to upload images');
             authManager.showLoginModal();
             return;
@@ -154,7 +154,7 @@ class GalleryManager {
     renderGallery() {
         const grid = document.getElementById('galleryGrid');
         const emptyState = document.getElementById('galleryEmpty');
-        const isAdmin = authManager && authManager.isLoggedIn();
+        const isAdmin = authManager && authManager.isAdmin();
         
         if (!grid) return;
 

@@ -119,6 +119,10 @@ class AuthManager {
         return this.isAuthenticated;
     }
 
+    isAdmin() {
+        return this.isAuthenticated;
+    }
+
     updateUI() {
         // Update upload controls visibility
         const uploadControls = document.querySelector('.upload-controls');
