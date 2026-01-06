@@ -82,6 +82,29 @@ class AuthManager {
         
         // Initialize UI
         this.updateUI();
+        
+        // Setup modal close on outside click
+        this.setupModalCloseOnOutsideClick();
+    }
+
+    setupModalCloseOnOutsideClick() {
+        const modals = ['admin-login-modal', 'user-management-modal', 'event-modal'];
+        
+        modals.forEach(modalId => {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    // Check if click is directly on the modal backdrop (not on modal content)
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                    }
+                });
+            }
+        });
+    }
+
+    isAdmin() {
+        return this.isAuthenticated;
     }
 
     login(username, password) {
@@ -94,6 +117,17 @@ class AuthManager {
             sessionStorage.setItem('isAuthenticated', 'true');
             sessionStorage.setItem('currentUser', username);
             this.updateUI();
+            
+            // Update bio editable state if main.js is loaded
+            if (typeof window.musicWebsite !== 'undefined' && window.musicWebsite.updateBioEditableState) {
+                window.musicWebsite.updateBioEditableState();
+            }
+            
+            // Trigger event re-render if events manager is available
+            if (typeof eventsManager !== 'undefined' && eventsManager.renderEvents) {
+                eventsManager.renderEvents();
+            }
+            
             return true;
         }
         return false;
@@ -105,6 +139,16 @@ class AuthManager {
         sessionStorage.removeItem('isAuthenticated');
         sessionStorage.removeItem('currentUser');
         this.updateUI();
+        
+        // Update bio editable state if main.js is loaded
+        if (typeof window.musicWebsite !== 'undefined' && window.musicWebsite.updateBioEditableState) {
+            window.musicWebsite.updateBioEditableState();
+        }
+        
+        // Trigger event re-render if events manager is available
+        if (typeof eventsManager !== 'undefined' && eventsManager.renderEvents) {
+            eventsManager.renderEvents();
+        }
         
         // Show logout notification
         if (typeof window.musicWebsite !== 'undefined') {
@@ -120,13 +164,19 @@ class AuthManager {
     }
 
     updateUI() {
-        // Update upload controls visibility
+        this.updateUIBasedOnAuth();
+    }
+
+    updateUIBasedOnAuth() {
+        const loggedIn = this.isAdmin();
+        
+        // Update navigation buttons
         const uploadControls = document.querySelector('.upload-controls');
         const adminBtn = document.getElementById('admin-btn');
         const logoutBtn = document.getElementById('logout-btn');
         const manageUsersBtn = document.getElementById('manage-users-btn');
         
-        if (this.isAuthenticated) {
+        if (loggedIn) {
             // Show upload controls
             if (uploadControls) {
                 uploadControls.style.display = 'flex';
@@ -148,15 +198,38 @@ class AuthManager {
             if (manageUsersBtn) manageUsersBtn.style.display = 'none';
         }
         
-        // Update add event button (only admins can add events)
+        // Events section - Add event button
         const addEventBtn = document.getElementById('add-event-btn');
         if (addEventBtn) {
-            if (this.isAuthenticated) {
-                addEventBtn.style.display = 'inline-block';
+            addEventBtn.style.display = loggedIn ? 'inline-block' : 'none';
+        }
+        
+        // Edit/Delete buttons for events (will be updated when events are rendered)
+        document.querySelectorAll('.event-delete-btn').forEach(btn => {
+            btn.style.display = loggedIn ? 'inline-block' : 'none';
+        });
+        
+        // Bio section
+        const bioText = document.getElementById('bio-text');
+        const saveBioBtn = document.getElementById('save-bio-btn');
+        if (bioText) {
+            if (loggedIn) {
+                bioText.setAttribute('contenteditable', 'true');
+                bioText.classList.add('editable');
             } else {
-                addEventBtn.style.display = 'none';
+                bioText.removeAttribute('contenteditable');
+                bioText.classList.remove('editable');
             }
         }
+        if (saveBioBtn) {
+            saveBioBtn.style.display = loggedIn ? 'inline-block' : 'none';
+        }
+        
+        // Gallery upload controls (already handled by uploadControls)
+        // Gallery delete buttons would be added here if they exist
+        document.querySelectorAll('.delete-gallery-item-btn').forEach(btn => {
+            btn.style.display = loggedIn ? 'inline-block' : 'none';
+        });
     }
 
     showLoginModal() {

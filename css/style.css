@@ -676,6 +676,7 @@ input[type="range"]::-moz-range-thumb {
     padding: var(--spacing-md);
     border-radius: 8px;
     border-left: 4px solid var(--color-accent);
+    transition: all var(--transition-normal);
 }
 
 .bio-text h3 {
@@ -691,6 +692,17 @@ input[type="range"]::-moz-range-thumb {
 
 .bio-text[contenteditable="true"]:focus {
     outline: 2px solid var(--color-accent);
+}
+
+.bio-text.editable {
+    cursor: text;
+    border-left: 4px solid var(--color-primary);
+    background: rgba(15, 15, 30, 0.7);
+}
+
+.bio-text.editable:hover {
+    background: rgba(15, 15, 30, 0.8);
+    box-shadow: var(--shadow-md);
 }
 
 /* ==========================================================================
