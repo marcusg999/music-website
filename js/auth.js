@@ -157,6 +157,17 @@ class AuthManager {
                 addEventBtn.style.display = 'none';
             }
         }
+
+        // Gallery upload controls
+        const galleryUploadControls = document.getElementById('galleryUploadControls');
+        if (galleryUploadControls) {
+            galleryUploadControls.style.display = this.isAuthenticated ? 'block' : 'none';
+        }
+        
+        // Refresh gallery to show/hide delete buttons
+        if (window.galleryManager) {
+            galleryManager.renderGallery();
+        }
     }
 
     showLoginModal() {
