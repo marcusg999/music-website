@@ -42,6 +42,15 @@ A fully functional, immersive music website featuring WebGL 3D graphics with a m
 - Mayan glyph-inspired iconography throughout
 - Earth-tone color palette (browns, terracottas, jade greens, obsidian blacks)
 
+### 📷 Instagram Feed Integration
+- **Live Instagram feed** displaying recent posts
+- Multiple integration options: Juicer.io, Instagram API, or manual upload
+- Responsive grid layout (3 columns desktop, 2 tablet, 1 mobile)
+- Hover effects showing post stats (likes, comments) and caption preview
+- Direct links to Instagram posts
+- Automatic caching for better performance
+- Loading and error states
+
 ### 📱 Fully Responsive
 - Mobile-first design approach
 - Hamburger menu for mobile navigation
@@ -239,6 +248,86 @@ This project is open source and available under the MIT License.
 - [ ] Image upload for gallery
 - [ ] Export/import playlist feature
 - [ ] Advanced audio effects (equalizer, reverb)
+
+## 📷 Instagram Feed Setup
+
+The website includes Instagram feed integration with multiple setup options:
+
+### Option 1: Juicer.io (Recommended - Easiest)
+
+1. **Sign up for Juicer.io**
+   - Visit https://www.juicer.io
+   - Free tier includes up to 1 social feed
+
+2. **Connect Instagram**
+   - Click "Add Social Media Account"
+   - Choose Instagram
+   - Authorize your Instagram account
+
+3. **Get Feed Name**
+   - In Juicer dashboard, note your feed name
+   - This is typically your username or a custom name
+
+4. **Configure Website**
+   - Open `js/instagram-config.js`
+   - Set `method: 'juicer'`
+   - Update `juicer.feedName` with your feed name
+   - Update `username` with your Instagram handle
+
+5. **Test**
+   - Reload website
+   - Instagram feed should appear
+
+### Option 2: Instagram Basic Display API
+
+1. **Create Facebook App**
+   - Go to https://developers.facebook.com
+   - Create new app
+   - Add "Instagram Basic Display" product
+
+2. **Configure Instagram Basic Display**
+   - Add Instagram test user
+   - Generate access token
+   - **Note**: Token expires every 90 days (needs refresh)
+
+3. **Get Credentials**
+   - Copy access token
+   - Copy user ID
+
+4. **Configure Website**
+   - Open `js/instagram-config.js`
+   - Set `method: 'official'`
+   - Update `official.accessToken`
+   - Update `official.userId`
+   - Update `username`
+
+### Option 3: Manual Posts (No API)
+
+1. **Configure**
+   - Open `js/instagram-config.js`
+   - Set `method: 'manual'`
+
+2. **Upload Posts**
+   - Posts can be added programmatically
+   - Store in localStorage as `instagramManualPosts`
+   - Format: `[{id, image, caption, likes, comments, link, date}]`
+
+### Customization
+
+**Change number of posts:**
+```javascript
+postsToShow: 9 // Change to 6, 12, etc.
+```
+
+**Change cache duration:**
+```javascript
+cacheDuration: 30 // Minutes before refreshing feed
+```
+
+**Disable Instagram feed:**
+```javascript
+enabled: false
+```
 
 ## 📧 Contact
 
